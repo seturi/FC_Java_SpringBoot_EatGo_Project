@@ -1,11 +1,13 @@
 package kr.co.fastcampus.eatgo.eatgo.interfaces;
 
+import kr.co.fastcampus.eatgo.eatgo.application.RestaurantService;
 import org.junit.jupiter.api.Test;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.hamcrest.core.StringContains.containsString;
@@ -17,6 +19,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class RestaurantControllerTest {
     @Autowired
     private MockMvc mvc;
+
+    @MockBean
+    private RestaurantService restaurantService;
 
     @Test
     public void list() throws Exception{
@@ -41,7 +46,11 @@ public class RestaurantControllerTest {
                 ))
                 .andExpect(content().string(
                         containsString("\"name\":\"Bob zip\"")
+                ))
+                .andExpect(content().string(
+                        containsString("Kimchi")
                 ));
+
         mvc.perform(get("/restaurants/2020"))
                 .andExpect(status().isOk())
                 .andExpect(content().string(
