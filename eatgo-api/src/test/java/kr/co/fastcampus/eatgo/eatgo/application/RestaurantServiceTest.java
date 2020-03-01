@@ -1,12 +1,9 @@
 package kr.co.fastcampus.eatgo.eatgo.application;
 
-import kr.co.fastcampus.eatgo.eatgo.domain.MenuItem;
-import kr.co.fastcampus.eatgo.eatgo.domain.MenuItemRepository;
-import kr.co.fastcampus.eatgo.eatgo.domain.Restaurant;
-import kr.co.fastcampus.eatgo.eatgo.domain.RestaurantRepository;
+import kr.co.fastcampus.eatgo.eatgo.domain.*;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.Before;
+import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -29,7 +26,7 @@ public class RestaurantServiceTest {
     @Mock
     private MenuItemRepository menuItemRepository;
 
-    @BeforeEach
+    @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
 
@@ -41,7 +38,11 @@ public class RestaurantServiceTest {
 
     private void mockRestaurantRepository() {
         List<Restaurant> restaurants = new ArrayList<>();
-        Restaurant restaurant = new Restaurant(1004L, "Bob zip", "Seoul");
+        Restaurant restaurant = Restaurant.builder()
+                .id(1004L)
+                .name("Bob zip")
+                .address("Seoul")
+                .build();
         restaurants.add(restaurant);
 
         given(restaurantRepository.findAll()).willReturn(restaurants);
@@ -51,7 +52,9 @@ public class RestaurantServiceTest {
 
     private void mockMenuItemRepository() {
         List<MenuItem> menuItems = new ArrayList<>();
-        menuItems.add(new MenuItem("Kimchi"));
+        menuItems.add(MenuItem.builder()
+        .name("Kimchi")
+        .build());
 
         given(menuItemRepository.findAllByRestaurantId(1004L))
                 .willReturn(menuItems);
@@ -67,22 +70,48 @@ public class RestaurantServiceTest {
     }
 
     @Test
-    public void getRestaurant(){
+    public void getRestaurantWithExisted(){
         Restaurant restaurant = restaurantService.getRestaurant(1004L);
         assertThat(restaurant.getId()).isEqualTo(1004L);
         MenuItem menuItem = restaurant.getMenuItems().get(0);
         assertThat(menuItem.getName()).isEqualTo("Kimchi");
     }
 
+    @Test(expected = RestaurantNotFoundException.class)
+    public void getRestaurantWithNotExisted() {
+        restaurantService.getRestaurant(404L);
+    }
+
     @Test
     public void addRestaurant() {
-        Restaurant restaurant = new Restaurant("BeRyong", "Busan");
-        Restaurant saved = new Restaurant(1234L, "BeRyong", "Busan");
+        given(restaurantRepository.save(any())).will(invocation -> {
+            Restaurant restaurant = invocation.getArgument(0);
+            restaurant.setId(1234L);
+            return restaurant;
+        });
 
-        given(restaurantRepository.save(any())).willReturn(saved);
+        Restaurant restaurant = Restaurant.builder()
+                .name("BeRyong")
+                .address("Busan")
+                .build();
 
         Restaurant created = restaurantService.addRestaurant(restaurant);
         assertThat(created.getId()).isEqualTo(1234L);
+    }
+
+    @Test
+    public void updateRestaurant(){
+        Restaurant restaurant = Restaurant.builder()
+                .id(1004L)
+                .name("Bob zip")
+                .address("Seoul")
+                .build();
+        given(restaurantRepository.findById(1004L))
+                .willReturn(Optional.of(restaurant));
+
+        restaurantService.updateRestaurant(1004L, "Sool zip", "Busan");
+        assertThat(restaurant.getName()).isEqualTo("Sool zip");
+        assertThat(restaurant.getAddress()).isEqualTo("Busan");
     }
 
 }
