@@ -37,7 +37,7 @@ class UserControllerTest {
         List<User> users = new ArrayList<>();
         users.add(User.builder()
                 .email("tester@example.com")
-                .name("테스터")
+                .name("Tester")
                 .level(1L)
                 .build());
 
@@ -45,7 +45,7 @@ class UserControllerTest {
 
         mvc.perform(get("/users"))
                 .andExpect(status().isOk())
-                .andExpect(content().string(containsString("테스터")));
+                .andExpect(content().string(containsString("Tester")));
     }
 
     @Test

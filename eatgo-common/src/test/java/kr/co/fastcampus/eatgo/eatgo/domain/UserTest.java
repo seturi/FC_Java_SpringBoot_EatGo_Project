@@ -8,14 +8,14 @@ import static org.junit.jupiter.api.Assertions.*;
 class UserTest {
 
     @Test
-    public void creatrion() {
+    public void creation() {
         User user = User.builder()
                 .email("tester@example.com")
-                .name("테스터")
+                .name("Tester")
                 .level(100L)
                 .build();
 
-        assertThat(user.getName()).isEqualTo("테스터");
+        assertThat(user.getName()).isEqualTo("Tester");
         assertThat(user.isAdmin()).isEqualTo(true);
         assertThat(user.isActive()).isEqualTo(true);
 
