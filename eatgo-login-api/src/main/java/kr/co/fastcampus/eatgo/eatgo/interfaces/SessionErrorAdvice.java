@@ -1,6 +1,5 @@
 package kr.co.fastcampus.eatgo.eatgo.interfaces;
 
-import kr.co.fastcampus.eatgo.eatgo.application.EmailExistedException;
 import kr.co.fastcampus.eatgo.eatgo.application.EmailNotExistedException;
 import kr.co.fastcampus.eatgo.eatgo.application.PasswordWrongException;
 import org.springframework.http.HttpStatus;
