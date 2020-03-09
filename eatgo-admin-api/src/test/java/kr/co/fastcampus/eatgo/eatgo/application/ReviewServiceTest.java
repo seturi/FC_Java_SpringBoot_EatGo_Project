@@ -4,6 +4,7 @@ import kr.co.fastcampus.eatgo.eatgo.domain.Review;
 import kr.co.fastcampus.eatgo.eatgo.domain.ReviewRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -18,6 +19,7 @@ import static org.mockito.Mockito.verify;
 
 class ReviewServiceTest {
 
+    @InjectMocks
     private ReviewService reviewService;
 
     @Mock
@@ -26,12 +28,12 @@ class ReviewServiceTest {
     @BeforeEach
     public void setUp(){
         MockitoAnnotations.initMocks(this);
-        reviewService = new ReviewService(reviewRepository);
     }
     @Test
     public void getReviews(){
         List<Review> mockReviews = new ArrayList<>();
         mockReviews.add(Review.builder().description("Cool!").build());
+
         given(reviewRepository.findAll()).willReturn(mockReviews);
 
         List<Review> reviews = reviewService.getReviews();

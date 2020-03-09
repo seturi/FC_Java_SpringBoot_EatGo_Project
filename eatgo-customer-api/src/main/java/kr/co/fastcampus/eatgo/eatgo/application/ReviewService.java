@@ -5,7 +5,10 @@ import kr.co.fastcampus.eatgo.eatgo.domain.ReviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+
 @Service
+@Transactional
 public class ReviewService {
 
     private ReviewRepository reviewRepository;
@@ -17,13 +20,14 @@ public class ReviewService {
 
     public Review addReview(Long restaurantId, String name , Integer score,
                             String description) {
+
         Review review = Review.builder()
                 .restaurantId(restaurantId)
                 .name(name)
                 .score(score)
                 .description(description)
                 .build();
-        review.setRestaurantId(restaurantId);
+
         return reviewRepository.save(review);
     }
 }

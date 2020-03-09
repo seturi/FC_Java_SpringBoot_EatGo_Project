@@ -22,26 +22,24 @@ import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-class ReviewControllerTest {
-    @WebMvcTest(ReviewController.class)
-    public class ReviewControllerTests {
+@WebMvcTest(ReviewController.class)
+public class ReviewControllerTest {
 
-        @Autowired
-        MockMvc mvc;
+    @Autowired
+    MockMvc mvc;
 
-        @MockBean
-        private ReviewService reviewService;
+    @MockBean
+    private ReviewService reviewService;
 
-        @Test
-        public void list() throws Exception {
-            List<Review> reviews = new ArrayList<>();
-            reviews.add(Review.builder().description("Cool!").build());
+    @Test
+    public void list() throws Exception {
+        List<Review> reviews = new ArrayList<>();
+        reviews.add(Review.builder().description("Cool!").build());
 
-            given(reviewService.getReviews()).willReturn(reviews);
+        given(reviewService.getReviews()).willReturn(reviews);
 
-            mvc.perform(get("/reviews"))
-                    .andExpect(status().isOk())
-                    .andExpect(content().string(containsString("Cool!")));
-        }
+        mvc.perform(get("/reviews"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("Cool!")));
     }
 }

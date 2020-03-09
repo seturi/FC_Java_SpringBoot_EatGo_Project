@@ -24,7 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(UserController.class)
-class UserControllerTest {
+public class UserControllerTest {
 
     @Autowired
     private MockMvc mvc;
@@ -73,7 +73,7 @@ class UserControllerTest {
         mvc.perform(patch("/users/1004")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"email\":\"admin@example.com\"," +
-                        "\"name\":\"Administrator\",\"level\":\"100\"}"))
+                        "\"name\":\"Administrator\",\"level\":100}"))
                 .andExpect(status().isOk());
 
         Long id = 1004L;

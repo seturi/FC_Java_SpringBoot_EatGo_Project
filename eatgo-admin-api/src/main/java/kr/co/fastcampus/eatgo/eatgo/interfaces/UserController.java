@@ -10,6 +10,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 
+@CrossOrigin
 @RestController
 public class UserController {
 
@@ -28,6 +29,7 @@ public class UserController {
     ) throws URISyntaxException {
         String email = resource.getEmail();
         String name = resource.getName();
+
         User user = userService.addUser(email, name);
 
         String url = "/users/" + user.getId();
@@ -44,6 +46,7 @@ public class UserController {
         Long level = resource.getLevel();
 
         userService.updateUser(id, email, name, level);
+
         return "{}";
     }
 

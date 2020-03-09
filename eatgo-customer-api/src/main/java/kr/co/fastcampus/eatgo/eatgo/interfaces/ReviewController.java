@@ -6,15 +6,13 @@ import kr.co.fastcampus.eatgo.eatgo.domain.Review;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+@CrossOrigin
 @RestController
 public class ReviewController {
 
@@ -35,7 +33,7 @@ public class ReviewController {
 
         Review review = reviewService.addReview(restaurantId, name, score, description);
 
-        String url = "/restaurants/" + restaurantId +"/reviews/" + review.getId();
+        String url = "/restaurants/" + restaurantId + "/reviews/" + review.getId();
         return ResponseEntity.created(new URI(url)).body("{}");
     }
 }

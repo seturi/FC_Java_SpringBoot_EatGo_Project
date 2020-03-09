@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
-class UserTest {
+public class UserTest {
 
     @Test
     public void creation() {
@@ -16,22 +16,23 @@ class UserTest {
                 .build();
 
         assertThat(user.getName()).isEqualTo("Tester");
-        assertThat(user.isAdmin()).isEqualTo(true);
-        assertThat(user.isActive()).isEqualTo(true);
+        assertThat(user.isAdmin()).isTrue();
+        assertThat(user.isActive()).isTrue();
 
         user.deactivate();
-        assertThat(user.isActive()).isEqualTo(false);
+
+        assertThat(user.isActive()).isFalse();
     }
 
     @Test
     public void restaurantOwner() {
         User user = User.builder().level(1L).build();
 
-        assertThat(user.isRestaurantOwner()).isEqualTo(false);
+        assertThat(user.isRestaurantOwner()).isFalse();
 
         user.setRestaurantId(1004L);
 
-        assertThat(user.isRestaurantOwner()).isEqualTo(true);
+        assertThat(user.isRestaurantOwner()).isTrue();
         assertThat(user.getRestaurantId()).isEqualTo(1004L);
     }
 }

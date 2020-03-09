@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
-class RestaurantTests {
+public class RestaurantTest {
 
     @Test
     public void creation() {
@@ -27,6 +27,7 @@ class RestaurantTests {
                 .name("Bob zip")
                 .address("Seoul")
                 .build();
+
         assertThat(restaurant.getInformation()).isEqualTo("Bob zip in Seoul");
     }
 

@@ -39,7 +39,7 @@ public class RestaurantControllerTest {
         restaurants.add(Restaurant.builder()
                 .id(1004L)
                 .categoryId(1L)
-                .name("Joker House")
+                .name("JOKER House")
                 .address("Seoul")
                 .build());
 
@@ -52,7 +52,7 @@ public class RestaurantControllerTest {
                         containsString("\"id\":1004")
                 ))
                 .andExpect(content().string(
-                        containsString("\"name\":\"Joker House\"")
+                        containsString("\"name\":\"JOKER House\"")
                 ));
     }
 
@@ -60,7 +60,7 @@ public class RestaurantControllerTest {
     public void detailWithExisted() throws Exception{
         Restaurant restaurant = Restaurant.builder()
                 .id(1004L)
-                .name("Joker House")
+                .name("JOKER House")
                 .address("Seoul")
                 .build();
 
@@ -69,6 +69,7 @@ public class RestaurantControllerTest {
                 .build();
 
         restaurant.setMenuItems(Arrays.asList(menuItem));
+
         Review review = Review.builder()
                 .name("JOKER")
                 .score(5)
@@ -84,7 +85,7 @@ public class RestaurantControllerTest {
                         containsString("\"id\":1004")
                 ))
                 .andExpect(content().string(
-                        containsString("\"name\":\"Joker House\"")
+                        containsString("\"name\":\"JOKER House\"")
                 ))
                 .andExpect(content().string(
                         containsString("Kimchi")
@@ -98,6 +99,7 @@ public class RestaurantControllerTest {
     public void detailWithNotExisted() throws Exception{
         given(restaurantService.getRestaurant(404L))
                 .willThrow(new RestaurantNotFoundException(404L));
+
         mvc.perform(get("/restaurants/404"))
                 .andExpect(status().isNotFound())
                 .andExpect(content().string("{}"));

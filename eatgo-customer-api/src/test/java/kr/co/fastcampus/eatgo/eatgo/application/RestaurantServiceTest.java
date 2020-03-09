@@ -3,6 +3,7 @@ package kr.co.fastcampus.eatgo.eatgo.application;
 import kr.co.fastcampus.eatgo.eatgo.domain.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -19,7 +20,7 @@ import static org.mockito.Mockito.verify;
 
 public class RestaurantServiceTest {
 
-
+    @InjectMocks
     private RestaurantService restaurantService;
 
     @Mock
@@ -38,8 +39,6 @@ public class RestaurantServiceTest {
         mockRestaurantRepository();
         mockMenuItemRepository();
         mockReviewRepository();
-
-        restaurantService = new RestaurantService(restaurantRepository, menuItemRepository, reviewRepository);
     }
 
     private void mockRestaurantRepository() {
@@ -62,8 +61,8 @@ public class RestaurantServiceTest {
     private void mockMenuItemRepository() {
         List<MenuItem> menuItems = new ArrayList<>();
         menuItems.add(MenuItem.builder()
-        .name("Kimchi")
-        .build());
+                .name("Kimchi")
+                .build());
 
         given(menuItemRepository.findAllByRestaurantId(1004L))
                 .willReturn(menuItems);
@@ -72,7 +71,7 @@ public class RestaurantServiceTest {
     private void mockReviewRepository() {
         List<Review> reviews = new ArrayList<>();
         reviews.add(Review.builder()
-                .name("BeRyong")
+                .name("Beryong")
                 .score(1)
                 .description("Bad")
                 .build());
@@ -85,7 +84,8 @@ public class RestaurantServiceTest {
     public void getRestaurants() {
         String region = "Seoul";
         Long categoryId = 1L;
-        List<Restaurant> restaurants = restaurantService.getRestaurants(region, categoryId);
+        List<Restaurant> restaurants =
+                restaurantService.getRestaurants(region, categoryId);
 
         Restaurant restaurant = restaurants.get(0);
 
@@ -124,7 +124,8 @@ public class RestaurantServiceTest {
         });
 
         Restaurant restaurant = Restaurant.builder()
-                .name("BeRyong")
+                .categoryId(1L)
+                .name("Beryong")
                 .address("Busan")
                 .build();
 
@@ -136,13 +137,17 @@ public class RestaurantServiceTest {
     public void updateRestaurant(){
         Restaurant restaurant = Restaurant.builder()
                 .id(1004L)
+                .categoryId(1L)
                 .name("Bob zip")
                 .address("Seoul")
                 .build();
+
         given(restaurantRepository.findById(1004L))
                 .willReturn(Optional.of(restaurant));
 
-        restaurantService.updateRestaurant(1004L, "Sool zip", "Busan");
+        restaurantService.updateRestaurant(1004L, 2L, "Sool zip", "Busan");
+
+        assertThat(restaurant.getCategoryId()).isEqualTo(2L);
         assertThat(restaurant.getName()).isEqualTo("Sool zip");
         assertThat(restaurant.getAddress()).isEqualTo("Busan");
     }

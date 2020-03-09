@@ -4,6 +4,7 @@ import kr.co.fastcampus.eatgo.eatgo.domain.*;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -20,7 +21,7 @@ import static org.mockito.Mockito.verify;
 
 public class RestaurantServiceTest {
 
-
+    @InjectMocks
     private RestaurantService restaurantService;
 
     @Mock
@@ -31,8 +32,6 @@ public class RestaurantServiceTest {
         MockitoAnnotations.initMocks(this);
 
         mockRestaurantRepository();
-
-        restaurantService = new RestaurantService(restaurantRepository);
     }
 
     private void mockRestaurantRepository() {
@@ -40,12 +39,13 @@ public class RestaurantServiceTest {
         Restaurant restaurant = Restaurant.builder()
                 .id(1004L)
                 .categoryId(1L)
-                .name("Bob zip")
                 .address("Seoul")
+                .name("Bob zip")
                 .build();
         restaurants.add(restaurant);
 
         given(restaurantRepository.findAll()).willReturn(restaurants);
+
         given(restaurantRepository.findById(1004L))
                 .willReturn(Optional.of(restaurant));
     }
@@ -82,11 +82,12 @@ public class RestaurantServiceTest {
         });
 
         Restaurant restaurant = Restaurant.builder()
-                .name("BeRyong")
+                .name("Beryong")
                 .address("Busan")
                 .build();
 
         Restaurant created = restaurantService.addRestaurant(restaurant);
+
         assertThat(created.getId()).isEqualTo(1234L);
     }
 
@@ -97,10 +98,12 @@ public class RestaurantServiceTest {
                 .name("Bob zip")
                 .address("Seoul")
                 .build();
+
         given(restaurantRepository.findById(1004L))
                 .willReturn(Optional.of(restaurant));
 
-        restaurantService.updateRestaurant(1004L, "Sool zip", "Busan");
+        restaurantService.updateRestaurant(1004L, 1L,"Sool zip", "Busan");
+
         assertThat(restaurant.getName()).isEqualTo("Sool zip");
         assertThat(restaurant.getAddress()).isEqualTo("Busan");
     }

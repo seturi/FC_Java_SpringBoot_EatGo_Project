@@ -39,11 +39,11 @@ public class RestaurantController {
 
         Restaurant restaurant = restaurantService.addRestaurant(
                 Restaurant.builder()
-                .name(resource.getName())
-                .address(resource.getAddress())
-                .build());
+                        .categoryId(resource.getCategoryId())
+                        .name(resource.getName())
+                        .address(resource.getAddress())
+                        .build());
 
-        restaurantService.addRestaurant(restaurant);
 
         URI location = new URI("/restaurants/" + restaurant.getId());
         return ResponseEntity.created(location).body("{}");
@@ -52,9 +52,11 @@ public class RestaurantController {
     @PatchMapping("/restaurants/{id}")
     public String update(@PathVariable("id") Long id,
                          @Valid @RequestBody Restaurant resource){
+        Long categoryId = resource.getCategoryId();
         String name = resource.getName();
         String address = resource.getAddress();
-        restaurantService.updateRestaurant(id, name, address);
+
+        restaurantService.updateRestaurant(id, categoryId, name, address);
 
         return "{}";
     }

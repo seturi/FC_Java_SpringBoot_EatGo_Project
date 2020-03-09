@@ -27,7 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class CategoryControllerTest {
 
     @Autowired
-    MockMvc mvc;
+    private MockMvc mvc;
 
     @MockBean
     private CategoryService categoryService;
@@ -48,6 +48,7 @@ public class CategoryControllerTest {
     @Test
     public void create() throws Exception {
         Category category = Category.builder().name("Korean Food").build();
+
         given(categoryService.addCategory("Korean Food")).willReturn(category);
 
         mvc.perform(post("/categories")

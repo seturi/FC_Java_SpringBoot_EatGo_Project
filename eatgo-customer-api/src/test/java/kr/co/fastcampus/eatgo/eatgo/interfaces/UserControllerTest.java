@@ -18,10 +18,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(UserController.class)
-class UserControllerTest {
+public class UserControllerTest {
 
     @Autowired
-    MockMvc mvc;
+    private MockMvc mvc;
 
     @MockBean
     private UserService userService;
@@ -41,11 +41,12 @@ class UserControllerTest {
 
         mvc.perform(post("/users")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content("{\"email\":\"tester@example.com\", \"name\":\"Tester\", \"password\":\"test\"}"))
+                .content("{\"email\":\"tester@example.com\", " +
+                        "\"name\":\"Tester\", \"password\":\"test\"}"))
                 .andExpect(status().isCreated())
                 .andExpect(header().string("location", "/users/1004"));
 
-        verify(userService).registerUser(
-                eq("tester@example.com"), eq("Tester"), eq("test"));
+        verify(userService)
+                .registerUser("tester@example.com", "Tester", "test");
     }
 }

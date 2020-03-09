@@ -4,6 +4,7 @@ import kr.co.fastcampus.eatgo.eatgo.domain.Region;
 import kr.co.fastcampus.eatgo.eatgo.domain.RegionRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -15,8 +16,9 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 
-class RegionServiceTest {
+public class RegionServiceTest {
 
+    @InjectMocks
     private RegionService regionService;
 
     @Mock
@@ -25,7 +27,6 @@ class RegionServiceTest {
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        regionService = new RegionService(regionRepository);
     }
 
     @Test

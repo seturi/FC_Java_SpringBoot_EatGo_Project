@@ -19,10 +19,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(ReviewController.class)
-class ReviewControllerTests {
+public class ReviewControllerTest {
 
     @Autowired
-    MockMvc mvc;
+    private MockMvc mvc;
 
     @MockBean
     private ReviewService reviewService;
@@ -41,7 +41,7 @@ class ReviewControllerTests {
                 .andExpect(status().isCreated())
                 .andExpect(header().string("location", "/restaurants/1/reviews/1004"));
 
-        verify(reviewService).addReview(eq(1L), eq("John"), eq(3), eq("Mat-it-da"));
+        verify(reviewService).addReview(1L, "John", 3, "Mat-it-da");
     }
 
     @Test
@@ -54,16 +54,3 @@ class ReviewControllerTests {
         verify(reviewService, never()).addReview(any(), any(), any(), any());
     }
 }
-
-//    @Test
-//    public void list() throws Exception {
-//        List<Review> reviews = new ArrayList<>();
-//        reviews.add(Review.builder().description("Cool!").build());
-//
-//        given(reviewService.getReviews()).willReturn(reviews);
-//
-//        mvc.perform(get("/reviews"))
-//                .andExpect(status().isOk())
-//                .andExpect(content().string(containsString("Cool!")));
-//    }
-//}

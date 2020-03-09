@@ -10,9 +10,9 @@ import javax.persistence.Transient;
 
 @Entity
 @Getter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class MenuItem {
 
     @Id

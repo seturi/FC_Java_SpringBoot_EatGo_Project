@@ -8,6 +8,7 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
+@Transactional
 public class RestaurantService {
 
     private RestaurantRepository restaurantRepository;
@@ -23,10 +24,9 @@ public class RestaurantService {
         this.reviewRepository = reviewRepository;
     }
 
-    public List<Restaurant> getRestaurants(String region, long categoryId) {
-        List<Restaurant> restaurants =
-                restaurantRepository.findAllByAddressContainingAndCategoryId(
-                        region, categoryId);
+    public List<Restaurant> getRestaurants(String region, Long categoryId) {
+        List<Restaurant> restaurants = restaurantRepository.findAllByAddressContainingAndCategoryId(
+                region, categoryId);
 
         return restaurants;
     }
@@ -34,10 +34,12 @@ public class RestaurantService {
     public Restaurant getRestaurant(Long id) {
         Restaurant restaurant = restaurantRepository.findById(id)
                 .orElseThrow(() -> new RestaurantNotFoundException(id));
+
         List<MenuItem> menuItems = menuItemRepository.findAllByRestaurantId(id);
         restaurant.setMenuItems(menuItems);
 
-        List<Review> review = reviewRepository.findAllByRestaurantId(id);
+        List<Review> reviews = reviewRepository.findAllByRestaurantId(id);
+        restaurant.setReviews(reviews);
 
         return restaurant;
     }
@@ -46,10 +48,13 @@ public class RestaurantService {
         return restaurantRepository.save(restaurant);
     }
 
-    @Transactional
-    public Restaurant updateRestaurant(Long id, String name, String address) {
+
+    public Restaurant updateRestaurant(Long id, Long categoryId,
+                                       String name, String address) {
         Restaurant restaurant = restaurantRepository.findById(id).orElse(null);
-        restaurant.updateInformation(name, address);
+
+        restaurant.updateInformation(categoryId, name, address);
+
         return restaurant;
     }
 }

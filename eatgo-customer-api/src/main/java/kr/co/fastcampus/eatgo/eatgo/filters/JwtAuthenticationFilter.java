@@ -25,10 +25,11 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
         this.jwtUtil = jwtUtil;
     }
 
-     @Override
-    protected void doFilterInternal(HttpServletRequest request,
-                                    HttpServletResponse response,
-                                    FilterChain chain
+    @Override
+    protected void doFilterInternal(
+            HttpServletRequest request,
+            HttpServletResponse response,
+            FilterChain chain
     ) throws IOException, ServletException {
         Authentication authentication = getAuthentication(request);
 
@@ -47,7 +48,9 @@ public class JwtAuthenticationFilter extends BasicAuthenticationFilter {
         }
 
         Claims claims = jwtUtil.getClaims(token.substring("Bearer ".length()));
+
         Authentication authentication = new UsernamePasswordAuthenticationToken(claims, null);
+
         return authentication;
     }
 }

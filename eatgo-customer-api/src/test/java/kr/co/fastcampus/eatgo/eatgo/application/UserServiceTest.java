@@ -4,6 +4,7 @@ import kr.co.fastcampus.eatgo.eatgo.domain.User;
 import kr.co.fastcampus.eatgo.eatgo.domain.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -18,8 +19,9 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
-class UserServiceTest {
+public class UserServiceTest {
 
+    @InjectMocks
     private UserService userService;
 
     @Mock
@@ -31,7 +33,6 @@ class UserServiceTest {
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        userService = new UserService(userRepository, passwordEncoder);
     }
 
     @Test
@@ -54,7 +55,9 @@ class UserServiceTest {
         User user = User.builder().build();
         given(userRepository.findByEmail(email)).willReturn(Optional.of(user));
 
-        userService.registerUser(email, name, password);
+        assertThatThrownBy(() -> {
+            userService.registerUser(email, name, password);
+        }).isInstanceOf(EmailExistedException.class);
 
         verify(userRepository, never()).save(any());
     }

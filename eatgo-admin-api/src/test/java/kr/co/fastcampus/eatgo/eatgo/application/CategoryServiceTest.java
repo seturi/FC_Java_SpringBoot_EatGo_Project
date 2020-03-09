@@ -6,6 +6,7 @@ import kr.co.fastcampus.eatgo.eatgo.domain.Region;
 import kr.co.fastcampus.eatgo.eatgo.domain.RegionRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -20,6 +21,7 @@ import static org.mockito.Mockito.verify;
 
 class CategoryServiceTest {
 
+    @InjectMocks
     private CategoryService categoryService;
 
     @Mock
@@ -28,15 +30,14 @@ class CategoryServiceTest {
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        categoryService = new CategoryService(categoryRepository);
     }
 
     @Test
     public void getCategories() {
-        List<Category> mockCategories = new ArrayList<>();
-        mockCategories.add(Category.builder().name("Korean Food").build());
+        List<Category> mockCategory = new ArrayList<>();
+        mockCategory.add(Category.builder().name("Korean Food").build());
 
-        given(categoryRepository.findAll()).willReturn(mockCategories);
+        given(categoryRepository.findAll()).willReturn(mockCategory);
 
         List<Category> categories = categoryService.getCategories();
 

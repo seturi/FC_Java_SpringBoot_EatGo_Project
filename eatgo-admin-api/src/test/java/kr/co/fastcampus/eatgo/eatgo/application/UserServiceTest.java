@@ -4,6 +4,7 @@ import kr.co.fastcampus.eatgo.eatgo.domain.User;
 import kr.co.fastcampus.eatgo.eatgo.domain.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -20,6 +21,7 @@ import static org.mockito.Mockito.verify;
 
 class UserServiceTest {
 
+    @InjectMocks
     private UserService userService;
 
     @Mock
@@ -28,7 +30,6 @@ class UserServiceTest {
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        userService = new UserService(userRepository);
     }
 
     @Test
@@ -36,14 +37,14 @@ class UserServiceTest {
         List<User> mockUsers = new ArrayList<>();
         mockUsers.add(User.builder()
                 .email("tester@example.com")
-                .name("테스터")
+                .name("Tester")
                 .level(1L)
                 .build());
 
         given(userRepository.findAll()).willReturn(mockUsers);
         List<User> users = userService.getUsers();
         User user = users.get(0);
-        assertThat(users.get(0).getName()).isEqualTo("테스터");
+        assertThat(users.get(0).getName()).isEqualTo("Tester");
     }
 
     @Test
@@ -83,7 +84,7 @@ class UserServiceTest {
         verify(userRepository).findById(eq(id));
 
         assertThat(user.getName()).isEqualTo("Superman");
-        assertThat(user.isAdmin()).isEqualTo(true);
+        assertThat(user.isAdmin()).isTrue();
 
     }
 
@@ -103,8 +104,8 @@ class UserServiceTest {
         User user = userService.deactiveUser(1004L);
         verify(userRepository).findById(1004L);
 
-        assertThat(user.isAdmin()).isEqualTo(false);
-        assertThat(user.isActive()).isEqualTo(false);
+        assertThat(user.isAdmin()).isFalse();
+        assertThat(user.isActive()).isFalse();
 
     }
 }
